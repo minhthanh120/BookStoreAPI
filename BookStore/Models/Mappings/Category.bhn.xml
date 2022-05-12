@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" auto-import="true" assembly="BookStore" namespace="BookStore.Models.Entities">
+    <class name="Category" table="Category" dynamic-update="true">
+		<cache usage="read-write"/>
+		<id name="CategoryId" column="CategoryId">
+			<generator class="increment" />
+		</id>
+		<property name="CategoryName" column="CategoryName"/>
+		<property name="SoTiet" column="SOTIET"/>
+        <!-- many-to-many -->
+	</class>
+</hibernate-mapping>

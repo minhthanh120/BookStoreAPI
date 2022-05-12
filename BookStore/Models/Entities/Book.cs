@@ -6,6 +6,13 @@
         public virtual string BookName { get; set; }
         public virtual int Price { get; set; }
         public virtual string BookDescr { get; set; }
+        public virtual string Supplier { get; set; }
+        public virtual string Publisher { get; set; }
+        public virtual double Weight { get; set; }//Length, Height, Weight
+        public virtual double Height { get; set; }
+        public virtual double Length { get; set; }
+        public virtual double Width { get; set; }
+        public virtual int PublishYear { get; set;}
         public virtual IList<Author> Authors { get; protected set; }
         public virtual IList<Category> Categories { get; protected set; }
         public virtual IList<Picture> Pictures { get; protected set; }

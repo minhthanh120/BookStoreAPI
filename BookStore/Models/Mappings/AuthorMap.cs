@@ -7,10 +7,14 @@ namespace BookStore.Models.Mappings
     {
         public AuthorMap()
         {
-            Id(x => x.AuthorId);
-            Map(x=>x.AuthorName);
-            Map(x=>x.AuthorDescr);
-            HasManyToMany(x=>x.Books).Cascade.All().Table("AuthorBook");
+            Table("Author");
+            Id(x => x.AuthorId, "AuthorId").GeneratedBy.Identity();
+            Map(x=>x.AuthorName, "AuthorName");
+            Map(x=>x.AuthorDescr, "AuthorDescr");
+            HasManyToMany(x=>x.Books).Cascade.SaveUpdate().Table("AuthorBook")
+                .LazyLoad()
+                .ParentKeyColumn("AuthorId")
+                .ChildKeyColumn("BookId");
         }
     }
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" auto-import="true" assembly="BookStore" namespace="BookStore.Models.Entities">
+    <class name="Evaluation" table="Evaluation" dynamic-update="true">
+		<cache usage="read-write"/>
+		<id name="EvalId" column="EvalId">
+			<generator class="increment" />
+		</id>
+		<property name="Content" column="Content"/>
+		<property name="Score" column="Score"/>
+        <property name="UserId" column="UserId"/>
+	</class>
+</hibernate-mapping>

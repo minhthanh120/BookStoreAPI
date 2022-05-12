@@ -6,9 +6,10 @@ namespace BookStore.Models.Mappings
     {
         public PictureMap()
         {
-            Id(x => x.PictureId);
-            Map(x=>x.PicturePath);
-            References(x => x.Book);
+            Table("Picture");
+            Id(x => x.PictureId, "PictureId").GeneratedBy.Identity();
+            Map(x=>x.PicturePath, "PicturePath");
+            References(x => x.Book,"BookId");
         }
     }
 }

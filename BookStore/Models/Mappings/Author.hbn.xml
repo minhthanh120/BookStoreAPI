@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" auto-import="true" assembly="BookStore" namespace="BookStore.Models.Entities">
+	<class name="Author" table="Author" dynamic-update="true">
+		<cache usage="read-write"/>
+		<id name="AuthorId" column="AuthorId">
+			<generator class="increment" />
+		</id>
+		<property name="AuthorName" column="AuthorName"/>
+		<property name="AuthorDescr" column="AuthorDescr"/>
+		<!-- many to many -->
+	</class>
+
+	
+</hibernate-mapping>

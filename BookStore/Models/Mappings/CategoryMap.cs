@@ -6,9 +6,13 @@ namespace BookStore.Models.Mappings
     {
         public CategoryMap()
         {
-            Id(x => x.CategoryId);
-            Map(x => x.CategoryId);
-            HasManyToMany(x=>x.Books).Cascade.All().Table("CategoryBook");
+            Table("Category");
+            Id(x => x.CategoryId, "CategoryId").GeneratedBy.Identity();
+            Map(x => x.CategoryName, "CategoryName");
+            HasManyToMany(x=>x.Books).Cascade.SaveUpdate().Table("CategoryBook")
+                .LazyLoad()
+                .ParentKeyColumn("CategoryId")
+                .ChildKeyColumn("BookId");
         }
     }
 }

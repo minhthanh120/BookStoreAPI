@@ -7,11 +7,12 @@ namespace BookStore.Models.Mappings
     {
         public EvaluationMap()
         {
-            Id(x => x.EvalId);
-            Map(x=>x.Content);
-            Map(x=>x.UserId);
-            Map(x=>x.Score);
-            References(x => x.Book);
+            Table("Evaluation");
+            Id(x => x.EvalId, "EvalId").GeneratedBy.Identity();
+            Map(x=>x.Content, "Content");
+            Map(x=>x.UserId, "UserId");
+            Map(x=>x.Score, "Score");
+            References(x => x.Book, "BookId");
         }
     }
 }
