@@ -8,7 +8,10 @@
 		<property name="AuthorName" column="AuthorName"/>
 		<property name="AuthorDescr" column="AuthorDescr"/>
 		<!-- many to many -->
-	</class>
-
+		<bag name="Books" table="AuthorBook" cascade ="save-update" lazy="false">
+			<key column="AuthorId"/>
+			<many-to-many class="Book" column="BookId"/>
+		</bag>
 	
+</class>
 </hibernate-mapping>

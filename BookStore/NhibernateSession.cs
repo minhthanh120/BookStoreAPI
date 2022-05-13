@@ -16,102 +16,57 @@ namespace BookStore
 {
     public class NhibernateSession
     {
-        /*
+        public NhibernateSession()
+        {
+
+        }
+        private static ISessionFactory _sessionFactory;
+
+
         public static ISession OpenSession()
         {
             var configuration = new Configuration();
-            //configuration.Configure(@"D:\QLSVnew\QLSV\Models\hibernate.cfg.xml");
-            //configuration.AddFile(@"D:\QLSVnew\QLSV\Mappings\Models.hbn.xml");
-            //configuration.AddFile(@"D:\QLSVnew\QLSV\Mappings\DTO.hbn.xml");
+            configuration.Configure(@"C:\Users\MinhThanh\source\repos\BookStore\BookStore\Models\hibernate.cfg.xml");
+            configuration.AddFile(@"C:\Users\MinhThanh\source\repos\BookStore\BookStore\Models\Mappings\Author.hbn.xml");
+            configuration.AddFile(@"C:\Users\MinhThanh\source\repos\BookStore\BookStore\Models\Mappings\Book.hbn.xml");
+            configuration.AddFile(@"C:\Users\MinhThanh\source\repos\BookStore\BookStore\Models\Mappings\Category.bhn.xml");
+            configuration.AddFile(@"C:\Users\MinhThanh\source\repos\BookStore\BookStore\Models\Mappings\Evaluation.hbn.xml");
+            configuration.AddFile(@"C:\Users\MinhThanh\source\repos\BookStore\BookStore\Models\Mappings\Picture.hbn.xml");
             ISessionFactory sessionFactory = configuration.BuildSessionFactory();
             return sessionFactory.OpenSession();
         }
-        */
+
         /*
-        private static ISessionFactory _sessionFactory;
-        private static ISessionFactory SessionFactory
-        {
-            get
-            {
-                if (_sessionFactory == null)
-                    InitializeSessionFactory(); return _sessionFactory;
-            }
-        }
-        private static void InitializeSessionFactory()
-        {
-            _sessionFactory = Fluently.Configure()			
-         .Database(MsSqlConfiguration.MsSql2012.ConnectionString(
-            @"Data Source=localhost\SQLEXPRESS;Initial Catalog=BOOKSTORE;Integrated Security=True").ShowSql())
-         .Mappings(m => m.FluentMappings
-         .AddFromAssemblyOf<Program>())
-         .ExposeConfiguration(cfg => new SchemaExport(cfg)
-         //.Create(true, true)
-         )
-         .BuildSessionFactory();
-        }
-        */
         public static ISession OpenSession()
         {
-            ISessionFactory sessionFactory = Fluently.Configure()
+            
+
+
+
+            _sessionFactory = Fluently.Configure()
                 .Database(MsSqlConfiguration.MsSql2012
                   .ConnectionString("Data Source=localhost\\SQLEXPRESS;Initial Catalog=BOOKSTORE;Integrated Security=True")
-                  //.ShowSql()
+                //.ShowSql()
                 )
                 .Mappings(m =>
                        m.FluentMappings
-                       .AddFromAssemblyOf<Program>()
+                       .AddFromAssemblyOf<BookMap>()
+                       .AddFromAssemblyOf<AuthorMap>()
+                       .AddFromAssemblyOf<PictureMap>()
+                       .AddFromAssemblyOf<EvaluationMap>()
+                       .AddFromAssemblyOf<CategoryMap>()
                        )
-                .ExposeConfiguration(cfg => new SchemaExport(cfg)
-                .Create(false, false))
+                //.ExposeConfiguration(cfg => new SchemaExport(cfg)
+                //.Create(false, false))
                 .BuildSessionFactory();
 
-            return sessionFactory.OpenSession();
-            //return SessionFactory.OpenSession();
-        }
-        /*
-        public static void CloseSession()
-        {
-            _sessionFactory.Close();
-        }
-        */
-        //private const string CurrentSessionKey = "nhibernate.current_session";
-        /*
-        private static readonly ISessionFactory _sessionFactory;
-        static NhibernateSession()
-        {
-            _sessionFactory = FluentConfigure();
-        }
-
-
-        public static ISession OpenSession()
-        {
             return _sessionFactory.OpenSession();
         }
-        public static void CloseSession()
+        */
+        public static void CloseSessionFactory()
         {
             _sessionFactory.Close();
         }
-        public static void CloseSessionFactory()
-        {
-            if (_sessionFactory != null)
-            {
-                _sessionFactory.Close();
-            }
-        }
-
-        public static ISessionFactory FluentConfigure()
-        {
-            return Fluently.Configure()
-               //which database
-               .Database(
-                   MsSqlConfiguration.MsSql2012
-                       .ConnectionString("Data Source=localhost\\SQLEXPRESS;Initial Catalog=BOOKSTORE;Integrated Security=True")
-                       )
-               //find/set the mappings
-               .Mappings(m => m.FluentMappings
-                .AddFromAssemblyOf<Program>())
-                .BuildSessionFactory();
-        }
-        */
+        
     }
 }

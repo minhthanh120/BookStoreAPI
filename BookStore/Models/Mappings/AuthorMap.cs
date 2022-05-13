@@ -12,7 +12,6 @@ namespace BookStore.Models.Mappings
             Map(x=>x.AuthorName, "AuthorName");
             Map(x=>x.AuthorDescr, "AuthorDescr");
             HasManyToMany(x=>x.Books).Cascade.SaveUpdate().Table("AuthorBook")
-                .LazyLoad()
                 .ParentKeyColumn("AuthorId")
                 .ChildKeyColumn("BookId");
         }

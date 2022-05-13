@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" auto-import="true" assembly="BookStore" namespace="BookStore.Models.Entities">
-    <class name="Evaluation" table="Evaluation" dynamic-update="true">
+    <class name="Picture" table="Picture" dynamic-update="true">
 		<cache usage="read-write"/>
 		<id name="PictureId" column="PictureId">
 			<generator class="increment" />
 		</id>
 		<property name="PicturePath" column="PicturePath"/>
-		<!-- many-to-many -->
+		<many-to-one class="Book" name="Book" column="BookId" cascade="save-update"/>
 	</class>
 </hibernate-mapping>

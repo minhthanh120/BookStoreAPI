@@ -1,4 +1,6 @@
-﻿using BookStore.Models.Entities;
+﻿using BookStore.Data;
+using BookStore.Interfaces;
+using BookStore.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using NHibernate;
 using ISession = NHibernate.ISession;
@@ -10,58 +12,44 @@ namespace BookStore.Controllers
     [ApiController]
     public class AuthorController : ControllerBase
     {
+        IData<Author> db;
+        public AuthorController()
+        {
+            db = new AuthorDAL();
+        }
         // GET: api/<AuthorController>
         [HttpGet]
         public IList<Author> Get()
         {
-            List<Author> authors = new List<Author>();
-            using(var session = NhibernateSession.OpenSession())
-            {
-                authors = (List<Author>)session.CreateCriteria<Author>().List<Author>();
-            }
-            
-            //NhibernateSession.CloseSession();
-            // Open a session to conect to the database
-            return authors;
+            return db.GetAll();
         }
 
         // GET api/<AuthorController>/5
         [HttpGet("{id}")]
         public Author Get(int id)
         {
-            Author author = new Author();
-            // Open a session to conect to the database
-            using(var session = NhibernateSession.OpenSession())
-            {
-                author = session.QueryOver<Author>()
-                  .Fetch(u => u.Books)
-                  .Eager
-                  .List()
-                  .Where(u => u.AuthorId == id)
-                  .FirstOrDefault();
-            }
-            ;  // Open a session to conect to the database
-            
-            //NhibernateSession.CloseSession();
-            return author;
+            return db.GetById(id);
         }
 
         // POST api/<AuthorController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public Author Post([FromBody] Author author)
         {
+            return db.Create(author);
         }
 
         // PUT api/<AuthorController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public Author Put(int id, [FromBody] Author author)
         {
+            return db.Update(author);
         }
 
         // DELETE api/<AuthorController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public bool Delete(int id)
         {
+            return db.Delete(db.GetById(id));
         }
     }
 }

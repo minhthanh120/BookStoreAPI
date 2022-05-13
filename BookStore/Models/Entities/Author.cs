@@ -5,10 +5,11 @@
         public virtual int AuthorId { get; protected set; }
         public virtual string AuthorName { get; set; }
         public virtual string AuthorDescr { get; set; }
-        public virtual IList<Book> Books { get; protected set; }
+#nullable enable
+        public virtual IList<Book>? Books { get; protected set; }
         public Author()
         {
-            this.Books = new List<Book>();
+            //this.Books = new List<Book>();
         }
         public virtual void AddBook(Book book)
         {

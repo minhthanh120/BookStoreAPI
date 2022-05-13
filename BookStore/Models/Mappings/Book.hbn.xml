@@ -15,5 +15,21 @@
         <property name="Width" column="Width"/>
         <property name="PublishYear" column="PublishYear"/>
         <!-- many-to-many -->
+		<bag name="Authors" table="AuthorBook" cascade ="save-update" lazy="false">
+			<key column="BookId"/>
+			<many-to-many class="Author" column="AuthorId"/>
+		</bag>
+		<bag name="Categories" table="CategoryBook" cascade ="save-update" lazy="false">
+			<key column="BookId"/>
+			<many-to-many class="Category" column="CategoryId"/>
+		</bag>
+		<bag name="Pictures" table="Picture" lazy="false">
+			<key column="BookID"/>
+			<one-to-many class="Picture"/>
+		</bag>
+		<bag name="Evals" table="Evaluation" lazy="false">
+			<key column="BookID"/>
+			<one-to-many class="Evaluation"/>
+		</bag>
 	</class>
 </hibernate-mapping>

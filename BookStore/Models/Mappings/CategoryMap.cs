@@ -10,7 +10,6 @@ namespace BookStore.Models.Mappings
             Id(x => x.CategoryId, "CategoryId").GeneratedBy.Identity();
             Map(x => x.CategoryName, "CategoryName");
             HasManyToMany(x=>x.Books).Cascade.SaveUpdate().Table("CategoryBook")
-                .LazyLoad()
                 .ParentKeyColumn("CategoryId")
                 .ChildKeyColumn("BookId");
         }

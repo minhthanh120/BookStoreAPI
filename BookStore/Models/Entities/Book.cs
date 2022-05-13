@@ -13,10 +13,10 @@
         public virtual double Length { get; set; }
         public virtual double Width { get; set; }
         public virtual int PublishYear { get; set;}
-        public virtual IList<Author> Authors { get; protected set; }
-        public virtual IList<Category> Categories { get; protected set; }
-        public virtual IList<Picture> Pictures { get; protected set; }
-        public virtual IList<Evaluation> Evals { get; protected set; }
+        public virtual IList<Author>? Authors { get; protected set; }
+        public virtual IList<Category>? Categories { get; protected set; }
+        public virtual IList<Picture>? Pictures { get; protected set; }
+        public virtual IList<Evaluation>? Evals { get; protected set; }
         public Book()
         {
             this.Authors = new List<Author>();

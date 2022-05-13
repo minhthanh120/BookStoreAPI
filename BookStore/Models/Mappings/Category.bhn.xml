@@ -6,7 +6,10 @@
 			<generator class="increment" />
 		</id>
 		<property name="CategoryName" column="CategoryName"/>
-		<property name="SoTiet" column="SOTIET"/>
         <!-- many-to-many -->
+		<bag name="Books" table="CategoryBook" cascade ="save-update" lazy="false">
+			<key column="CategoryId"/>
+			<many-to-many class="Book" column="BookId"/>
+		</bag>
 	</class>
 </hibernate-mapping>

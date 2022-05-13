@@ -8,5 +8,6 @@
 		<property name="Content" column="Content"/>
 		<property name="Score" column="Score"/>
         <property name="UserId" column="UserId"/>
+		<many-to-one class="Book" name="Book" column="BookId" cascade="save-update"/>
 	</class>
 </hibernate-mapping>
