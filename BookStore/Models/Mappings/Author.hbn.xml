@@ -10,8 +10,7 @@
 		<!-- many to many -->
 		<bag name="Books" table="AuthorBook" cascade ="save-update" lazy="false">
 			<key column="AuthorId"/>
-			<many-to-many class="Book" column="BookId"/>
+			<many-to-many class="BaseBook" column="BookId"/>
 		</bag>
-	
 </class>
 </hibernate-mapping>

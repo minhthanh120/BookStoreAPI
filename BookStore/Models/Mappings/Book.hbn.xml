@@ -13,15 +13,16 @@
         <property name="Height" column="Height"/>
         <property name="Length" column="Length"/>
         <property name="Width" column="Width"/>
+		<property name="Price" column="Price"/>
         <property name="PublishYear" column="PublishYear"/>
         <!-- many-to-many -->
 		<bag name="Authors" table="AuthorBook" cascade ="save-update" lazy="false">
 			<key column="BookId"/>
-			<many-to-many class="Author" column="AuthorId"/>
+			<many-to-many class="BaseAuthor" column="AuthorId"/>
 		</bag>
 		<bag name="Categories" table="CategoryBook" cascade ="save-update" lazy="false">
 			<key column="BookId"/>
-			<many-to-many class="Category" column="CategoryId"/>
+			<many-to-many class="BaseCategory" column="CategoryId"/>
 		</bag>
 		<bag name="Pictures" table="Picture" lazy="false">
 			<key column="BookID"/>

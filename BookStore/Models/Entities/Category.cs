@@ -4,14 +4,14 @@
     {
         public virtual int CategoryId { get; protected set; }
         public virtual string CategoryName { get; set; }
-        public virtual IList<Book>? Books { get; protected set; }
+        public virtual IList<BaseBook>? Books { get; protected set; }
         public Category()
         {
-            this.Books = new List<Book>();
+            this.Books = new List<BaseBook>();
         }
-        public virtual void AddBook(Book book)
+        public virtual void AddBook(BaseBook book)
         {
-            book.Categories.Add(this);
+            //book.Categories.Add(this);
             this.Books.Add(book);
         }
     }

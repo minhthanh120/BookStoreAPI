@@ -20,7 +20,7 @@ namespace BookStore
         {
 
         }
-        private static ISessionFactory _sessionFactory;
+        //private static ISessionFactory _sessionFactory;
 
 
         public static ISession OpenSession()
@@ -32,6 +32,7 @@ namespace BookStore
             configuration.AddFile(@"C:\Users\MinhThanh\source\repos\BookStore\BookStore\Models\Mappings\Category.bhn.xml");
             configuration.AddFile(@"C:\Users\MinhThanh\source\repos\BookStore\BookStore\Models\Mappings\Evaluation.hbn.xml");
             configuration.AddFile(@"C:\Users\MinhThanh\source\repos\BookStore\BookStore\Models\Mappings\Picture.hbn.xml");
+            configuration.AddFile(@"C:\Users\MinhThanh\source\repos\BookStore\BookStore\Models\Mappings\BaseModel.hbn.xml");
             ISessionFactory sessionFactory = configuration.BuildSessionFactory();
             return sessionFactory.OpenSession();
         }
@@ -39,10 +40,6 @@ namespace BookStore
         /*
         public static ISession OpenSession()
         {
-            
-
-
-
             _sessionFactory = Fluently.Configure()
                 .Database(MsSqlConfiguration.MsSql2012
                   .ConnectionString("Data Source=localhost\\SQLEXPRESS;Initial Catalog=BOOKSTORE;Integrated Security=True")
@@ -63,10 +60,10 @@ namespace BookStore
             return _sessionFactory.OpenSession();
         }
         */
-        public static void CloseSessionFactory()
-        {
-            _sessionFactory.Close();
-        }
+        //public static void CloseSessionFactory()
+        //{
+        //    _sessionFactory.Close();
+        //}
         
     }
 }
