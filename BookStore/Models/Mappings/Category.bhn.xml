@@ -7,7 +7,7 @@
 		</id>
 		<property name="CategoryName" column="CategoryName"/>
         <!-- many-to-many -->
-		<bag name="Books" table="CategoryBook" cascade ="save-update" lazy="false">
+		<bag name="Books" table="CategoryBook" cascade ="save-update" lazy="false" fetch ="select" inverse="false">
 			<key column="CategoryId"/>
 			<many-to-many class="BaseBook" column="BookId"/>
 		</bag>

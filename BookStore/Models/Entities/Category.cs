@@ -2,7 +2,7 @@
 {
     public class Category
     {
-        public virtual int CategoryId { get; protected set; }
+        public virtual int CategoryId { get; set; }
         public virtual string CategoryName { get; set; }
         public virtual IList<BaseBook>? Books { get; protected set; }
         public Category()

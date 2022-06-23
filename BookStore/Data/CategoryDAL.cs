@@ -3,29 +3,29 @@ using BookStore.Interfaces;
 using BookStore.Models.Entities;
 using ISession = NHibernate.ISession;
 using PagedList;
-using System.Linq;
+using BookStore.Models.Result;
 
 namespace BookStore.Data
 {
-    public class AuthorDAL : IData<Author>
+    public class CategoryDAL : IData<Category>
     {
-        public AuthorDAL()
+        public CategoryDAL()
         {
-        }
 
-        public Author Create(Author entity)
+        }
+        public Category Create(Category entity)
         {
-            Author result = null;
+            Category result = new Category();
             try
             {
                 using (ISession session = NhibernateSession.OpenSession())
                 {
                     using (var tx = session.BeginTransaction())
                     {
-                        session.CreateSQLQuery("SET IDENTITY_INSERT dbo." + ConstParam.tblauthor + " ON").UniqueResult();
+                        session.CreateSQLQuery("SET IDENTITY_INSERT dbo." + ConstParam.tblcategory + " ON").UniqueResult();
                         session.Save(entity);
                         tx.Commit();
-                        session.CreateSQLQuery("SET IDENTITY_INSERT dbo." + ConstParam.tblauthor + " OFF").UniqueResult();
+                        session.CreateSQLQuery("SET IDENTITY_INSERT dbo." + ConstParam.tblcategory + " OFF").UniqueResult();
                         result = entity;
                     }
                 }
@@ -37,7 +37,7 @@ namespace BookStore.Data
             return result;
         }
 
-        public bool Delete(Author entity)
+        public bool Delete(Category entity)
         {
             bool result = false;
             try
@@ -59,32 +59,32 @@ namespace BookStore.Data
             return result;
         }
 
-        public IPaged<Author> GetAll(string search, int pageNum, int pagedSize)
+        public IPaged<Category> GetAll(string search, int pageNum, int pageSize)
         {
-            List<Author> list = new List<Author>();
-            IPaged<Author> paged = null;
+            IPaged<Category> paged = null;
             try
             {
+                List<Category> list = new List<Category>();
                 if (!String.IsNullOrEmpty(search))
                 {
                     using (ISession session = NhibernateSession.OpenSession())
                     {
-                        list = (List<Author>)session.CreateCriteria<Author>().List<Author>()
-                            .Where(x => x.AuthorName.ToLower().Contains(search)).ToList();
+                        list = (List<Category>)session.CreateCriteria<Category>().List<Category>()
+                            .Where(x => x.CategoryName.ToLower().Contains(search)).ToList();
                     }
                 }
                 else
                 {
                     using (ISession session = NhibernateSession.OpenSession())
                     {
-                        list = (List<Author>)session.CreateCriteria<Author>().List<Author>();
+                        list = (List<Category>)session.CreateCriteria<Category>().List<Category>();
                     }
                 }
-                paged = new IPaged<Author>();
+                paged = new IPaged<Category>();
+                paged.PageSize = pageSize;
                 paged.PageNum = pageNum;
-                paged.PageSize = pagedSize;
                 paged.TotalCount = list.Count();
-                paged.Result = list.ToPagedList(pageNum, pagedSize).ToList<Author>();
+                paged.Result = list.ToPagedList(pageNum, pageSize).ToList<Category>();
             }
             catch (Exception ex)
             {
@@ -93,32 +93,33 @@ namespace BookStore.Data
             return paged;
         }
 
-        public Author GetById(int id)
+        public Category GetById(int id)
         {
-            Author entity = null;
+            Category obj = null;
             try
             {
                 using (ISession session = NhibernateSession.OpenSession())
                 {
-                    if (IsExist(entity.AuthorId))
-                        entity = session.Get<Author>(id);
+                    if (!session.Query<Category>().Any(x => x.CategoryId == id))
+                        return null;
+                    obj = session.Get<Category>(id);
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-            return entity;
+            return obj;
         }
 
-        public Author Update(Author entity)
+        public Category Update(Category entity)
         {
-            Author result = null;
+            Category obj = null;
             try
             {
                 using (ISession session = NhibernateSession.OpenSession())
                 {
-                    if (IsExist(entity.AuthorId))
+                    if (session.Query<Category>().Any(x => x.CategoryId == entity.CategoryId))
                     {
                         using (var tx = session.BeginTransaction())
                         {
@@ -126,28 +127,28 @@ namespace BookStore.Data
                             session.Merge(entity);
                             tx.Commit();
                             session.Flush();
-                            result = entity;
+                            obj = entity;
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                throw new InvalidOperationException(ex.Message);
             }
-            return result;
+            return obj;
         }
         public bool IsExist(int id)
         {
             bool result = false;
             try
             {
-                using (ISession session = NhibernateSession.OpenSession())
+                using(ISession session = NhibernateSession.OpenSession())
                 {
-                    result = session.Query<Author>().Any(x => x.AuthorId == id);
+                    result  = session.Query<Category>().Any(x => x.CategoryId == id);
                 }
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 throw new InvalidOperationException(ex.Message);
             }

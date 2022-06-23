@@ -2,9 +2,9 @@
 {
     public class Picture
     {
-        public virtual int PictureId { get; protected set; }
+        public virtual int PictureId { get; set; }
         public virtual string PicturePath { get; set; }
-        public virtual Book Book { get; protected set; }
+        public virtual Book Book { get; set; }
         public Picture()
         {
             this.Book = new Book();

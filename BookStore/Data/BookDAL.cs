@@ -1,6 +1,6 @@
-﻿using NHibernate;
-using BookStore.Interfaces;
+﻿using BookStore.Interfaces;
 using BookStore.Models.Entities;
+using PagedList;
 using ISession = NHibernate.ISession;
 namespace BookStore.Data
 {
@@ -8,72 +8,152 @@ namespace BookStore.Data
     {
         public BookDAL()
         {
-
         }
         public Book Create(Book entity)
         {
-            Book temp = new Book();
-            using (ISession session = NhibernateSession.OpenSession())
+            Book temp = null;
+            try
             {
-                using (var tx = session.BeginTransaction())
+                using (ISession session = NhibernateSession.OpenSession())
                 {
-                    session.CreateSQLQuery("SET IDENTITY_INSERT dbo.Book ON").UniqueResult();
-                    session.Save(entity);
-                    tx.Commit();
-                    session.CreateSQLQuery("SET IDENTITY_INSERT dbo.Book OFF").UniqueResult();
-                    temp = entity;
+                    using (var tx = session.BeginTransaction())
+                    {
+                        session.CreateSQLQuery("SET IDENTITY_INSERT dbo." + ConstParam.tblbook + " ON").UniqueResult();
+                        session.Save(entity);
+                        tx.Commit();
+                        session.CreateSQLQuery("SET IDENTITY_INSERT dbo." + ConstParam.tblbook + " OFF").UniqueResult();
+                        temp = entity;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(ex.Message);
             }
             return temp;
         }
 
         public bool Delete(Book entity)
         {
-            using (ISession session = NhibernateSession.OpenSession())
+            bool result = false;
+            try
             {
-                using (var tx = session.BeginTransaction())
+                if (IsExist(entity.BookId))
                 {
-                    session.Delete(entity);
-                    tx.Commit();
+                    using (ISession session = NhibernateSession.OpenSession())
+                    {
+                        using (var tx = session.BeginTransaction())
+                        {
+                            session.Delete(entity);
+                            tx.Commit();
+                            result = true;
+                        }
+                    }
                 }
             }
-            return true;
-        }
-        public List<Book> GetAll()
-        {
-            List<Book> list = new List<Book>();
-            using (ISession session = NhibernateSession.OpenSession())
+            catch (Exception ex)
             {
-                ;// Open a session to conect to the database
-                list = (List<Book>)session.CreateCriteria<Book>().List<Book>();
+                throw new InvalidOperationException(ex.Message);
+            }
+            return result;
+        }
+        public IPaged<Book> GetAll(string search, int pageNum, int pagedSize)
+        {
+
+            IPaged<Book> paged = null;
+            try
+            {
+                List<Book> list = new List<Book>();
+                if (!String.IsNullOrEmpty(search))
+                {
+                    using (ISession session = NhibernateSession.OpenSession())
+                    {
+                        list = (List<Book>)session.CreateCriteria<Book>().List<Book>()
+                            .Where(x => x.BookName.ToLower().Contains(search)).ToList();
+                    }
+                }
+                else
+                {
+                    using (ISession session = NhibernateSession.OpenSession())
+                    {
+                        list = (List<Book>)session.CreateCriteria<Book>().List<Book>();
+                    }
+                }
+                paged = new IPaged<Book>();
+                paged.PageNum = pageNum;
+                paged.PageSize = pagedSize;
+                paged.TotalCount = list.Count();
+                paged.Result = list.ToPagedList(pageNum, pagedSize).ToList<Book>();
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(ex.Message);
             }
             // Open a session to conect to the database
-            return list;
+
+            return paged;
         }
 
         public Book GetById(int id)
         {
-            Book entity = new Book();
-            using (ISession session = NhibernateSession.OpenSession())
+            Book result = null;
+            try
             {
-                entity = session.Get<Book>(id);
+                if (IsExist(id))
+                {
+                    using (ISession session = NhibernateSession.OpenSession())
+                    {
+                        result = session.Get<Book>(id);
+                    }
+                }
             }
-            return entity;
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(ex.Message);
+            }
+            return result;
         }
 
         public Book Update(Book entity)
         {
-            Book temp = new Book();
-            using (ISession session = NhibernateSession.OpenSession())
+            Book result = null;
+            try
             {
-                using (var tx = session.BeginTransaction())
+                if (IsExist(entity.BookId))
                 {
-                    session.Update(entity);
-                    tx.Commit();
-                    temp = entity;
+                    using (ISession session = NhibernateSession.OpenSession())
+                    {
+                        using (var tx = session.BeginTransaction())
+                        {
+                            session.Update(entity);
+                            tx.Commit();
+                            result = entity;
+                        }
+                    }
                 }
             }
-            return temp;
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(ex.Message);
+            }
+            return result;
+        }
+
+        public bool IsExist(int id)
+        {
+            bool result = false;
+            try
+            {
+                using (ISession session = NhibernateSession.OpenSession())
+                {
+                    result = session.Query<Book>().Any(x => x.BookId == id);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(ex.Message);
+            }
+            return result;
         }
     }
 }

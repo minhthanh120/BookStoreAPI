@@ -1,9 +1,6 @@
-﻿using BookStore.Data;
-using BookStore.Interfaces;
+﻿using BookStore.Interfaces;
 using BookStore.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
-using NHibernate;
-using ISession = NHibernate.ISession;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -13,46 +10,62 @@ namespace BookStore.Controllers
     [ApiController]
     public class BookController : ControllerBase
     {
-        IData<Book> db;
-        public BookController()
+        private readonly IData<Book> _db;
+        public BookController(IData<Book> db)
         {
-            db = new BookDAL();
+            _db = db;
         }
         // GET: api/<BookController>
         [HttpGet]
-        public IEnumerable<Book> Get()
+        public IActionResult Get(string? search = "", int pagedNum = 1, int pagedSize = 10)
         {
             // Open a session to conect to the database
-            return db.GetAll();
+            IPaged<Book> paged = _db.GetAll(search.Trim().ToLower(), pagedNum, pagedSize);
+            if (paged == null)
+                return BadRequest("Empty Result");
+            return Ok(paged);
         }
 
         // GET api/<BookController>/5
         [HttpGet("{id}")]
-        public Book Get(int id)
+        public IActionResult Get(int id)
         {
-            return db.GetById(id);
-
+            Book result = _db.GetById(id);
+            if (result == null)
+                return BadRequest("Can't find this Book");
+            return Ok(result);
         }
 
         // POST api/<BookController>
         [HttpPost]
-        public Book Post([FromBody] Book book)
+        public IActionResult Post([FromBody] Book book)
         {
-            return db.Create(book);
+            Book result = _db.Create(book);
+            if (result == null)
+                return BadRequest("Can't create book");
+            return Ok(result);
         }
 
         // PUT api/<BookController>/5
         [HttpPut("{id}")]
-        public Book Put(int id, [FromBody] Book book)
+        public IActionResult Put(int id, [FromBody] Book book)
         {
-            return db.Update(book);
+            book.BookId = id;
+            Book result = _db.Update(book);
+            if (result == null)
+                return BadRequest("Can't find Book");
+            return Ok(result);
         }
 
         // DELETE api/<BookController>/5
         [HttpDelete("{id}")]
-        public bool Delete(int id, [FromBody] Book book)
+        public IActionResult Delete(int id)
         {
-            return db.Delete(book);
+            Book book = _db.GetById(id);
+            if (book == null)
+                BadRequest("Can't find this book");
+            return Ok(_db.Delete(book));
         }
+
     }
 }

@@ -2,8 +2,10 @@
 using BookStore.Interfaces;
 using BookStore.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NHibernate;
 using ISession = NHibernate.ISession;
+using Microsoft.AspNetCore.Authorization;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace BookStore.Controllers
@@ -12,44 +14,63 @@ namespace BookStore.Controllers
     [ApiController]
     public class AuthorController : ControllerBase
     {
-        IData<Author> db;
-        public AuthorController()
+        private readonly IData<Author> _db;
+        public AuthorController(IData<Author> db)
         {
-            db = new AuthorDAL();
+            _db = db;
         }
         // GET: api/<AuthorController>
         [HttpGet]
-        public IList<Author> Get()
+        [ExpectedException(typeof(LazyInitializationException))]
+        public IActionResult Get(string? search = "", int pageNum = 1, int pageSize = 10)
         {
-            return db.GetAll();
+            IPaged<Author> result = new IPaged<Author>();
+            result = _db.GetAll(search.Trim().ToLower(), pageNum, pageSize);
+            if (result == null)
+                return BadRequest("Empty result");
+            return Ok(result);
         }
 
         // GET api/<AuthorController>/5
         [HttpGet("{id}")]
-        public Author Get(int id)
+        public IActionResult Get(int id)
         {
-            return db.GetById(id);
+            Author result = _db.GetById(id);
+            if (result != null)
+                return Ok(result);
+            return BadRequest("Don't have this Author");
         }
 
         // POST api/<AuthorController>
         [HttpPost]
-        public Author Post([FromBody] Author author)
+        [Authorize]
+        public IActionResult Post([FromBody] Author author)
         {
-            return db.Create(author);
+            Author result = _db.Create(author);
+            if (result == null)
+                return BadRequest("Error when Create Author");
+            return Ok(_db.Create(author));
         }
 
         // PUT api/<AuthorController>/5
         [HttpPut("{id}")]
-        public Author Put(int id, [FromBody] Author author)
+        public IActionResult Put(int id, [FromBody] Author author)
         {
-            return db.Update(author);
+            author.AuthorId = id;
+            Author result = _db.Update(author);
+            if (result == null)
+                return BadRequest("Dont have this Author");
+            return Ok(result);
         }
 
         // DELETE api/<AuthorController>/5
         [HttpDelete("{id}")]
-        public bool Delete(int id)
+        public IActionResult Delete(int id)
         {
-            return db.Delete(db.GetById(id));
+            Author author = _db.GetById(id);
+            if (author == null)
+                return BadRequest("Dont have this author");
+            return Ok(_db.Delete(_db.GetById(id)));
         }
     }
 }

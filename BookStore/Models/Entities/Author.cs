@@ -2,7 +2,7 @@
 {
     public class Author
     {
-        public virtual int AuthorId { get; protected set; }
+        public virtual int AuthorId { get; set; }
         public virtual string AuthorName { get; set; }
         public virtual string? AuthorDescr { get; set; }
 #nullable enable

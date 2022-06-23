@@ -8,7 +8,7 @@
 		<property name="AuthorName" column="AuthorName"/>
 		<property name="AuthorDescr" column="AuthorDescr"/>
 		<!-- many to many -->
-		<bag name="Books" table="AuthorBook" cascade ="save-update" lazy="false">
+		<bag name="Books" table="AuthorBook" cascade ="save-update" lazy="false" fetch="select" inverse="false">
 			<key column="AuthorId"/>
 			<many-to-many class="BaseBook" column="BookId"/>
 		</bag>

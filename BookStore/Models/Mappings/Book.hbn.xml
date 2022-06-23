@@ -3,18 +3,18 @@
     <class name="Book" table="Book" dynamic-update="true">
 		<cache usage="read-write"/>
 		<id name="BookId" column="BookId">
-			<generator class="increment" />
+			<generator class="native" />
 		</id>
-		<property name="BookName" column="BookName"/>
-		<property name="BookDescr" column="BookDescr"/>
-        <property name="Supplier" column="Supplier"/>
-        <property name="Publisher" column="Publisher"/>
-        <property name="Weight" column="Weight"/>
-        <property name="Height" column="Height"/>
-        <property name="Length" column="Length"/>
-        <property name="Width" column="Width"/>
-		<property name="Price" column="Price"/>
-        <property name="PublishYear" column="PublishYear"/>
+		<property name="BookName"		column="BookName"/>
+		<property name="BookDescr"		column="BookDescr"/>
+        <property name="Supplier"		column="Supplier"/>
+        <property name="Publisher"		column="Publisher"/>
+        <property name="Weight"			column="Weight"/>
+        <property name="Height"			column="Height"/>
+        <property name="Length"			column="Length"/>
+        <property name="Width"			column="Width"/>
+		<property name="Price"			column="Price"/>
+        <property name="PublishYear"	column="PublishYear"/>
         <!-- many-to-many -->
 		<bag name="Authors" table="AuthorBook" cascade ="save-update" lazy="false">
 			<key column="BookId"/>

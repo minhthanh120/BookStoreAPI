@@ -1,17 +1,20 @@
 ﻿using BookStore.Models.Entities;
-using FluentNHibernate.Mapping;
+using NHibernate.Mapping.ByCode.Conformist;
 namespace BookStore.Models.Mappings
 {
-    public class CategoryMap:ClassMap<Category>
+    public class CategoryMap : ClassMapping<Category>
     {
         public CategoryMap()
         {
             Table("Category");
-            Id(x => x.CategoryId, "CategoryId").GeneratedBy.Identity();
-            Map(x => x.CategoryName, "CategoryName");
-            HasManyToMany(x=>x.Books).Cascade.SaveUpdate().Table("CategoryBook")
-                .ParentKeyColumn("CategoryId")
-                .ChildKeyColumn("BookId");
+            Id(x => x.CategoryId, m => m.Column("CategoryId"));
+            Property(x => x.CategoryName, m => m.Column("CategoryName"));
+            Bag(x => x.Books,
+                c =>
+                {
+                    c.Cascade(NHibernate.Mapping.ByCode.Cascade.All);
+                },
+                r => r.OneToMany());
         }
     }
 }

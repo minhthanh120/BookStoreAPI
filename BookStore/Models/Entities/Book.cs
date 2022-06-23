@@ -2,7 +2,7 @@
 {
     public class Book
     {
-        public virtual int BookId { get; protected set; }
+        public virtual int BookId { get; set; }
         public virtual string BookName { get; set; }
         public virtual int? Price { get; set; }
         public virtual string? BookDescr { get; set; }
