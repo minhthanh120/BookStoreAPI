@@ -31,6 +31,10 @@ namespace BookStore.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
+            if (!_db.IsExist(id))
+            {
+                return NotFound();
+            }
             var result = _db.GetById(id);
             if (result == null)
                 return BadRequest("Dont have this category");
@@ -41,6 +45,10 @@ namespace BookStore.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] Category obj)
         {
+            if (!_db.IsExist(obj.CategoryId))
+            {
+                return NotFound();
+            }
             Category category = _db.Create(obj);
             if (category == null)
                 return BadRequest("Error Create Category");
@@ -51,6 +59,10 @@ namespace BookStore.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] Category obj)
         {
+            if (!_db.IsExist(id))
+            {
+                return NotFound();
+            }
             obj.CategoryId = id;
             Category category = _db.Update(obj);
             if (category == null)
@@ -60,8 +72,15 @@ namespace BookStore.Controllers
 
         // DELETE api/<CategoryController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            if (_db.IsExist(id))
+            {
+                Category category = _db.GetById(id);
+                _db.Delete(category);
+                return Ok("Deleted");
+            }
+            return BadRequest();
         }
     }
 }

@@ -169,7 +169,11 @@ VALUES
 (N'Bảy bước tới mùa hè',    10000,  N'Tiki',    N'NXB Trẻ',     0.3,    15,     18.5,   1.8,    2019,       N'Best of 2021'),
 (N'Cascaderseus',           10000,  N'Tiki',    N'NXB Quốc Gia',0.45,   17,     19.7,   2.5,    2022,       N'Cuốn sách hay nhất 2022'),
 (N'Mật Mã Da Vinci',        10000,  N'Tiki',    N'NXB Trí Việt',0.6,    16.8,   18.5,   1.8,    2022,       N'Bán chạy nhất 2022')
-
+INSERT INTO Book (BookName, Price,  Supplier,   Publisher,      Weight, Height,Length, Width, PublishYear, BookDescr)
+VALUES
+(N'Hướng dẫn sử dụng win 10',    10000,  N'Tiki',    N'NXB Trẻ',     0.3,    15,     18.5,   1.8,    2019,       N'Best of 2021'),
+(N'Angular cơ bản',           10000,  N'Tiki',    N'NXB Quốc Gia',0.45,   17,     19.7,   2.5,    2022,       N'Cuốn sách hay nhất 2022'),
+(N'Python cơ bản',        10000,  N'Tiki',    N'NXB Trí Việt',0.6,    16.8,   18.5,   1.8,    2022,       N'Bán chạy nhất 2022')
 
 insert into AuthorBook( BookId, AuthorId) values (1, 13)
 insert into AuthorBook( BookId, AuthorId) values (1, 14)
@@ -177,6 +181,20 @@ insert into AuthorBook( BookId, AuthorId) values (2,14 )
 insert into AuthorBook( BookId, AuthorId) values (3,14 )
 insert into AuthorBook( BookId, AuthorId) values (7, 15)
 insert into AuthorBook( BookId, AuthorId) values (8, 16)
+
+INSERT INTO Category(CategoryName) values(N'Văn học')
+INSERT INTO Category(CategoryName) values(N'Tiểu Thuyết')
+INSERT INTO Category(CategoryName) values(N'Khoa học')
+INSERT INTO Category(CategoryName) values(N'Truyện tranh')
+INSERT INTO Category(CategoryName) values(N'Báo chí')
+INSERT INTO Category(CategoryName) values(N'Sách giáo khoa')
+
+INSERT INTO CategoryBook(CategoryId, BookId) values(1,1)
+INSERT INTO CategoryBook(CategoryId, BookId) values(2,2)
+INSERT INTO CategoryBook(CategoryId, BookId) values(3,3)
+INSERT INTO CategoryBook(CategoryId, BookId) values(4,4)
+INSERT INTO CategoryBook(CategoryId, BookId) values(5,5)
+INSERT INTO CategoryBook(CategoryId, BookId) values(6,6)
 select * from AuthorBook
 select * from book
 
@@ -188,7 +206,7 @@ SELECT * FROM Book join AuthorBook on book.BookId=AuthorBook.BookId where author
 DELETE FROM Book
 WHERE BookId=6	/* add search conditions here */
 GO
-INSERT INTO AuthorBook(AuthorId=
+
 
 CREATE TABLE [UserPassword](
     Account		nvarchar(50),

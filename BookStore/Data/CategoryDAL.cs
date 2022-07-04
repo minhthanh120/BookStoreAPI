@@ -32,7 +32,7 @@ namespace BookStore.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                throw new Exception(ex.Message);
             }
             return result;
         }
@@ -107,7 +107,7 @@ namespace BookStore.Data
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                throw new Exception(ex.Message);
             }
             return obj;
         }

@@ -26,18 +26,25 @@ namespace BookStore
         }
         public static ISessionFactory _sessionFactory;
         public static Configuration _configuration1;
-
+        public static Configuration _appstart;
 
         public static ISession OpenSession()
         {
             var configuration = new Configuration();
-            configuration.Configure(@"C:\Users\MinhThanh\source\repos\BookStore\BookStore\Models\hibernate.cfg.xml");
-            configuration.AddFile(@"C:\Users\MinhThanh\source\repos\BookStore\BookStore\Models\Mappings\Author.hbn.xml");
-            configuration.AddFile(@"C:\Users\MinhThanh\source\repos\BookStore\BookStore\Models\Mappings\Book.hbn.xml");
-            configuration.AddFile(@"C:\Users\MinhThanh\source\repos\BookStore\BookStore\Models\Mappings\Category.bhn.xml");
-            configuration.AddFile(@"C:\Users\MinhThanh\source\repos\BookStore\BookStore\Models\Mappings\Evaluation.hbn.xml");
-            configuration.AddFile(@"C:\Users\MinhThanh\source\repos\BookStore\BookStore\Models\Mappings\Picture.hbn.xml");
-            configuration.AddFile(@"C:\Users\MinhThanh\source\repos\BookStore\BookStore\Models\Mappings\BaseModel.hbn.xml");
+            configuration.Configure(@"Models\hibernate.cfg.xml");
+            //configuration.SessionFactoryName("Product");
+            //configuration.DataBaseIntegration(db =>
+            //{
+            //    db.Dialect<MsSql2012Dialect>();
+            //    db.Driver<SqlClientDriver>();
+            //    db.ConnectionString = 
+            //})
+            configuration.AddFile(@"Models\Mappings\Author.hbn.xml");
+            configuration.AddFile(@"Models\Mappings\Book.hbn.xml");
+            configuration.AddFile(@"Models\Mappings\Category.bhn.xml");
+            configuration.AddFile(@"Models\Mappings\Evaluation.hbn.xml");
+            configuration.AddFile(@"Models\Mappings\Picture.hbn.xml");
+            configuration.AddFile(@"Models\Mappings\BaseModel.hbn.xml");
             ISessionFactory sessionFactory = configuration.BuildSessionFactory();
             return sessionFactory.OpenSession();
         }
