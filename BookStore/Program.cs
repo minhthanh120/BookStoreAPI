@@ -35,8 +35,8 @@ if (IsServerConnected(connectionString))
                           policy =>
                           {
                               policy.WithOrigins("*")
-                                                    .AllowAnyHeader()
-                                                    .AllowAnyMethod();
+                              .AllowAnyMethod().AllowAnyHeader()
+                              ;
                           });
     });
 
